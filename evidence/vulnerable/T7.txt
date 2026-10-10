@@ -1,0 +1,1 @@
+{"error":"HTTPConnectionPool(host='example-cdn.local', port=80): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPConnection(host='example-cdn.local', port=80): Failed to resolve 'example-cdn.local' ([Errno -5] No address associated with hostname)\"))"}

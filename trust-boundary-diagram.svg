@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560" viewBox="0 0 900 560" font-family="Segoe UI, Arial, sans-serif">
+  <rect width="900" height="560" fill="#ffffff"/>
+  <text x="450" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#0B1F33">Projekt P8 – Granice zaufania (SSRF)</text>
+  <text x="450" y="56" text-anchor="middle" font-size="13" fill="#64748B">Model: użytkownik → aplikacja (most) → sieć wewnętrzna</text>
+
+  <!-- Internet / strefa publiczna -->
+  <rect x="30" y="90" width="230" height="430" rx="10" fill="#F1F4F8" stroke="#94A3B8" stroke-dasharray="6 4"/>
+  <text x="145" y="114" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">Strefa publiczna</text>
+  <text x="145" y="132" text-anchor="middle" font-size="11" fill="#64748B">(niezaufana)</text>
+
+  <!-- uzytkownik/atakujacy -->
+  <rect x="70" y="200" width="150" height="80" rx="8" fill="#ffffff" stroke="#334155" stroke-width="1.5"/>
+  <text x="145" y="235" text-anchor="middle" font-size="14" font-weight="600" fill="#0B1F33">Użytkownik /</text>
+  <text x="145" y="255" text-anchor="middle" font-size="14" font-weight="600" fill="#B91C1C">atakujący</text>
+
+  <!-- Siec publiczna docker -->
+  <rect x="300" y="90" width="250" height="430" rx="10" fill="#EFF6FF" stroke="#3B82F6" stroke-dasharray="6 4"/>
+  <text x="425" y="114" text-anchor="middle" font-size="14" font-weight="700" fill="#1D4ED8">Sieć 'public' (DMZ)</text>
+
+  <!-- app -->
+  <rect x="330" y="200" width="190" height="110" rx="8" fill="#ffffff" stroke="#1D4ED8" stroke-width="2"/>
+  <text x="425" y="232" text-anchor="middle" font-size="15" font-weight="700" fill="#0B1F33">app</text>
+  <text x="425" y="252" text-anchor="middle" font-size="12" fill="#334155">/fetch?url=</text>
+  <text x="425" y="272" text-anchor="middle" font-size="11" fill="#64748B">port 8080 (publiczny)</text>
+  <text x="425" y="291" text-anchor="middle" font-size="11" fill="#B91C1C">most: public + internal</text>
+
+  <!-- Siec internal docker -->
+  <rect x="590" y="90" width="280" height="430" rx="10" fill="#FEF2F2" stroke="#DC2626" stroke-dasharray="6 4"/>
+  <text x="730" y="114" text-anchor="middle" font-size="14" font-weight="700" fill="#B91C1C">Sieć 'internal' (internal: true)</text>
+  <text x="730" y="132" text-anchor="middle" font-size="11" fill="#991B1B">brak wyjścia na świat – zaufana</text>
+
+  <!-- internal-api -->
+  <rect x="620" y="170" width="220" height="90" rx="8" fill="#ffffff" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="730" y="200" text-anchor="middle" font-size="14" font-weight="600" fill="#0B1F33">internal-api</text>
+  <text x="730" y="220" text-anchor="middle" font-size="12" fill="#334155">/admin (sekret)</text>
+  <text x="730" y="239" text-anchor="middle" font-size="11" fill="#64748B">cel T1</text>
+
+  <!-- metadata -->
+  <rect x="620" y="300" width="220" height="90" rx="8" fill="#ffffff" stroke="#DC2626" stroke-width="1.5"/>
+  <text x="730" y="330" text-anchor="middle" font-size="14" font-weight="600" fill="#0B1F33">metadata-mock</text>
+  <text x="730" y="350" text-anchor="middle" font-size="12" fill="#334155">169.254.169.254 (token)</text>
+  <text x="730" y="369" text-anchor="middle" font-size="11" fill="#64748B">cel T2</text>
+
+  <!-- local file -->
+  <rect x="330" y="360" width="190" height="70" rx="8" fill="#ffffff" stroke="#9333EA" stroke-width="1.5"/>
+  <text x="425" y="388" text-anchor="middle" font-size="13" font-weight="600" fill="#0B1F33">plik lokalny</text>
+  <text x="425" y="407" text-anchor="middle" font-size="11" fill="#64748B">file:///etc/passwd – cel T6</text>
+
+  <!-- strzalka legalna user->app -->
+  <line x1="220" y1="240" x2="330" y2="240" stroke="#334155" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="275" y="230" text-anchor="middle" font-size="10" fill="#334155">żądanie</text>
+
+  <!-- strzalki SSRF app->internal -->
+  <line x1="520" y1="225" x2="620" y2="210" stroke="#DC2626" stroke-width="2.5" marker-end="url(#arrR)"/>
+  <line x1="520" y1="260" x2="620" y2="335" stroke="#DC2626" stroke-width="2.5" marker-end="url(#arrR)"/>
+  <line x1="425" y1="310" x2="425" y2="360" stroke="#9333EA" stroke-width="2.5" marker-end="url(#arrP)"/>
+  <text x="565" y="200" text-anchor="middle" font-size="10" font-weight="700" fill="#B91C1C">SSRF</text>
+
+  <!-- blokada bezposrednia user->internal -->
+  <path d="M 145 200 C 145 150, 730 150, 730 168" fill="none" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <circle cx="437" cy="150" r="12" fill="#ffffff" stroke="#DC2626" stroke-width="2"/>
+  <line x1="429" y1="142" x2="445" y2="158" stroke="#DC2626" stroke-width="2"/>
+  <text x="437" y="178" text-anchor="middle" font-size="10" fill="#64748B">brak dostępu bezpośredniego</text>
+
+  <!-- legenda -->
+  <text x="30" y="548" font-size="11" fill="#64748B">Czerwone strzałki = nadużycie SSRF (serwer jako pośrednik). Przerywana linia z „zakazem" = atakujący nie dosięga sieci wewnętrznej wprost.</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#334155"/></marker>
+    <marker id="arrR" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#DC2626"/></marker>
+    <marker id="arrP" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#9333EA"/></marker>
+  </defs>
+</svg>

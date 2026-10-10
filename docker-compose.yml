@@ -1,0 +1,43 @@
+# Projekt P8 - SSRF i granica zaufania chmury
+# Srodowisko laboratoryjne. Wylacznie dane fikcyjne, wylacznie siec lokalna.
+services:
+  app:
+    build: ./app
+    container_name: ssrf-app
+    ports:
+      - "8080:8080"          # jedyny punkt wejscia dla uzytkownika
+    environment:
+      - VULNERABLE=1          # 1 = wersja podatna (Jakub), 0 = wersja z poprawka (kolega)
+      - ALLOWED_HOSTS=example-cdn.local   # uzywane dopiero w wersji z poprawka
+    networks:
+      - public
+      - internal             # aplikacja jest w OBU sieciach = most miedzy strefami
+    depends_on:
+      - internal-api
+      - metadata-mock
+
+  internal-api:
+    build: ./internal-api
+    container_name: internal-api
+    networks:
+      - internal             # tylko wewnatrz - uzytkownik nie ma tu dostepu
+    # UWAGA: celowo brak sekcji "ports" - nie wystawiamy tego na zewnatrz
+
+  metadata-mock:
+    build: ./metadata-mock
+    container_name: metadata-mock
+    networks:
+      internal:
+        # Udajemy chmurowy serwis metadanych pod jego typowym adresem
+        ipv4_address: 169.254.169.254
+    # rowniez bez "ports"
+
+networks:
+  public:
+    driver: bridge
+  internal:
+    driver: bridge
+    internal: true           # KLUCZOWE: ta siec nie ma wyjscia na swiat
+    ipam:
+      config:
+        - subnet: 169.254.169.0/24

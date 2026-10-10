@@ -1,0 +1,1 @@
+{"AccessKeyId":"AKIA-FIKCYJNE-DO-LABU","Note":"Dane nieprawdziwe - wygenerowane na potrzeby projektu P8.","SecretAccessKey":"sekret-fikcyjny-tylko-do-demonstracji","Token":"token-fikcyjny-SSRF-lab"}

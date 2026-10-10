@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+
+# Raporty - dane osobowe + binarny format (wysylamy recznie / OneDrive)
+*.docx
+
+# robocze
+.DS_Store
+Thumbs.db
